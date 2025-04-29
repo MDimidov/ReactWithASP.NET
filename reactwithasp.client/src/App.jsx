@@ -1,51 +1,42 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import { CircleDotIcon, CircleIcon, VolumeIcon } from "lucide-react";
+import FooterMusic from "./components/Footer/FooterMusic";
+import Header from "./components/Header/Header";
+import Login from "./components/Login/Login";
+import { DarkMode } from "./components/Practice/DarkMode";
+import Hero from "./components/Hero/Hero";
+import Register from "./components/Register/Register";
+import Error404 from "./components/Errors/error404";
+import { Playlists } from "./components/Songs/Playlist/Playlists";
+import { PlaylistContext, PlaylistContextProvider } from "./contexts/PlaylistContext";
+import Library from "./components/Songs/Library/Library";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Discover from "./components/Discover/PictureSongs";
+import { DragAndSlide } from "./components/Practice/DragAndSlide/DragAndSlide";
 
-function App() {
-    const [forecasts, setForecasts] = useState();
 
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
 
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
+export default function App() {
 
-    return (
-        <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
-    );
-    
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        if (response.ok) {
-            const data = await response.json();
-            setForecasts(data);
-        }
-    }
+  return (
+    <PlaylistContextProvider value={false}>
+      <div>
+        <Header />
+
+        <Routes>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="*" element={<Error404 />} />
+          <Route path="/" element={<Hero />} />
+          <Route path="dark" element={<DarkMode />} />
+          <Route path="drag" element={<DragAndSlide />} />
+          {/* <Route path="discover" element={<Discover />} /> */}
+        </Routes>
+        
+        {/* <Library /> */}
+        <Playlists />
+        <FooterMusic />
+
+      </div>
+    </PlaylistContextProvider>
+  );
 }
-
-export default App;
